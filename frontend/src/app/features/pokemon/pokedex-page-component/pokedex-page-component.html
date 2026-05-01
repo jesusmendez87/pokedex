@@ -1,0 +1,54 @@
+
+ <h1 class="text-center mt-4">Pokedex</h1>
+
+<div class="container mt-4">
+  <button class="btn btn-primary" (click)="abrirModal()">
+    Nuevo Pokemon
+  </button>
+</div>
+
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-4 mb-3" *ngFor="let pokemon of pokemons">
+      <app-pokemon-item-component
+        [nombre]="pokemon.nombre"
+        [tipo]="pokemon.tipo"
+        [urlImagen]="pokemon.urlImagen"
+        [id]="pokemon.id?.$oid || ''"
+        (eliminar)="deletePokemon(pokemon.id?.$oid || '')">
+
+       <img src="{{pokemon.urlImagen}}" alt="{{pokemon.nombre}}" class="img-fluid mb-2" />
+      </app-pokemon-item-component>
+    </div>
+  </div>
+<!-- MODAL -->
+<div class="modal fade show d-block" tabindex="-1" *ngIf="modalAbierto">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Nuevo Pokémon</h5>
+        <button title="Cerrar" type="button" class="btn-close" (click)="cerrarModal()"></button>
+      </div>
+
+      <div class="modal-body">
+    <app-nuevo-pokemon-component
+
+  *ngIf="modalAbierto"
+  (cerrar)="cerrarModal()"
+  (pokemonGuardado)="loadpokemons(); cerrarModal()">
+
+    </app-nuevo-pokemon-component>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="cerrarModal()">Cancelar</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FONDO OSCURO -->
+<div class="modal-backdrop fade show" *ngIf="modalAbierto"></div>
+

@@ -1,0 +1,6 @@
+desplegar angular
+
+ng new nombre
+ng serve
+npm install mongoose
+npm install dotenv
