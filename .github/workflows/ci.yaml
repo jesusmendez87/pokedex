@@ -1,0 +1,77 @@
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+ 
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+    name: Install and Build Frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+
+      - name: Install and build
+        working-directory: frontend
+        run: |
+          npm install
+          npm run build
+          npm run test -- --watch=false --browsers=ChromeHeadless
+        
+ 
+  backend:
+    runs-on: ubuntu-latest
+    environment: POKEMON_BACKEND
+    name: Install and Test Backend
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP with MongoDB
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mongodb, zip
+          tools: composer:v2
+           
+      
+      - name: Verify MongoDB extension
+        run: php -m | grep mongodb
+      
+      - name: Install Composer dependencies
+        working-directory: backend
+        run:  composer install --no-interaction --prefer-dist --ignore-platform-req=ext-mongodb
+    
+      
+      - name: Setup Laravel environment
+        working-directory: backend
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      - name: Clear config
+        run: php artisan config:clear
+        working-directory: backend
+
+      - name: Debug env
+        working-directory: backend
+        env:
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+        run: |
+          echo "MONGO_URI=$MONGO_URI"
+          php -r "var_dump(getenv('MONGO_URI'));"
+
+
+      - name: Run tests
+        working-directory: backend
+        env:
+          APP_ENV: testing
+          DB_CONNECTION: mongodb
+          DB_DATABASE: ${{ vars.DB_DATABASE }}
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+          APP_KEY: ${{ secrets.APP_KEY }}
+        run: php artisan test
+ #      
