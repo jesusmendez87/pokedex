@@ -46,6 +46,7 @@
                 }
               ],
               "outputHashing": "all"
+
             },
             "development": {
               "optimization": false,
@@ -80,6 +81,12 @@
           "builder": "@angular/build:karma",
           "options": {
             "tsConfig": "tsconfig.spec.json",
+            "main":./src/test.ts,
+            "polyfills": [
+      "zone.js",
+      "zone.js/testing"
+    ]
+
             "assets": [
               {
                 "glob": "**/*",
@@ -89,6 +96,7 @@
             "styles": [
               "src/styles.css"
             ]
+
           }
         }
       }

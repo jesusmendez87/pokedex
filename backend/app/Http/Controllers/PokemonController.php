@@ -40,11 +40,31 @@ class PokemonController extends Controller
           'urlImagen' => 'string',
 
       ]);
-        return DB::connection('mongodb')
+          DB::connection('mongodb')
             ->table('pokemons')
             ->insert($validated);
+
+            return response()->json($validated, 201);
+    }
+
+    public function update(Request $request, $id)
+    {
+        // Lógica para actualizar un Pokémon existente
+        $validated = $request->validate([
+            'nombre' => 'string|max:255',
+            'tipo' => 'string|max:255',
+            'urlImagen' => 'string',
+        ]);
+
+        DB::connection('mongodb')
+            ->table('pokemons')
+            ->where('_id', $id)
+            ->update($validated);
+
+        return response()->json($validated, 200);
+
+
     }
 
 
-    }
-
+}

@@ -28,11 +28,11 @@ export class PokedexPageComponent {
   deletePokemon(id: string) {
     this.pokemonService.deletePokemon(id).subscribe({
       next: res => {
-        console.log('Pokémon eliminado', res);
+        console.log('Pokemon eliminado', res);
         this.loadpokemons();
       },
       error: err => {
-        console.error('Error al eliminar el Pokémon', err);
+        console.error('Error al eliminar el Pokemon', err);
         alert('Error al eliminar el Pokémon');
       }
     });

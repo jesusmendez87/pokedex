@@ -29,12 +29,15 @@ export class NuevoPokemonComponent {
 
 
     cargarPokemon() {
-      this.pokemonService.addPokemon(this.nuevoPokemon).subscribe({
-      next: res => {
-          if (!this.nuevoPokemon.nombre || !this.nuevoPokemon.tipo) {
+
+               if (!this.nuevoPokemon.nombre || !this.nuevoPokemon.tipo) {
       alert('Debes completar el nombre y tipo del Pokémon');
       return;
     }
+    
+      this.pokemonService.addPokemon(this.nuevoPokemon).subscribe({
+      next: res => {
+ 
         console.log('Pokemon agregado', res);
         this.nuevoPokemon = { nombre: '', tipo: '', urlImagen: '', };
               alert('Pokémon agregado con éxito');
