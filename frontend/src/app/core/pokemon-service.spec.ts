@@ -28,7 +28,7 @@ describe('PokemonService', () => {
 
     service.getPokemonList().subscribe((data) => {
       expect(data.length).toBe(1);
-      expect(data[0].nombre).toBe('Pikachu');
+        expect(data[0].nombre).toBe('Pikachu');
     });
     const req = httpMock.expectOne((req) => req.url.includes('/api/pokemons'));
     expect(req.request.method).toBe('GET');

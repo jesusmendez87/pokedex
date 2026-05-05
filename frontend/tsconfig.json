@@ -3,6 +3,12 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "baseUrl": "./",                       // <--- Añade esto
+    "module": "ESNext",                    // <--- Cambia "preserve" por "ESNext"
+    "moduleResolution": "bundler",         // <--- Añade esto (crucial para v20)
+    "paths": {                             // <--- Añade esto para ayudar al editor
+      "@angular/*": ["./node_modules/@angular/*"]
+    },
     "strict": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
@@ -13,7 +19,7 @@
     "experimentalDecorators": true,
     "importHelpers": true,
     "target": "ES2022",
-    "module": "preserve"
+
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

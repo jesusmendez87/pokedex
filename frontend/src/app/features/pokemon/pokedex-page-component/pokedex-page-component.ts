@@ -1,12 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, Inject, PLATFORM_ID } from '@angular/core';
 import { PokemonResponse } from '../../../models/pokemon';
 import { PokemonService } from '../../../core/pokemon-service';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NuevoPokemonComponent } from "../nuevo-pokemon-component/nuevo-pokemon-component";
 import { PokemonItemComponent } from "../pokemon-item-component/pokemon-item-component";
-import { response } from 'express';
-
 
 @Component({
   selector: 'app-pokedex-page-component',
@@ -21,7 +19,12 @@ export class PokedexPageComponent {
   delete: string = '';
   modalAbierto = false;
 
-  constructor(private pokemonService: PokemonService) {
+  constructor(
+    private pokemonService: PokemonService,
+    @Inject(PLATFORM_ID) private platformId: object
+  ) {}
+
+  ngOnInit() {
     this.loadpokemons();
   }
 
@@ -38,7 +41,6 @@ export class PokedexPageComponent {
     });
   }
 
-
   loadpokemons() {
     this.pokemonService.getPokemonList().subscribe((data: PokemonResponse[]) => {
       this.pokemons = data;
@@ -51,6 +53,9 @@ export class PokedexPageComponent {
 
   cerrarModal() {
     this.modalAbierto = false;
-    window.location.reload();
+
+    if (isPlatformBrowser(this.platformId)) {
+      window.location.reload();
+    }
   }
 }
