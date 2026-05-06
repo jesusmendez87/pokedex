@@ -1,29 +1,31 @@
 FROM php:8.2-fpm
 
 RUN apt-get update && apt-get install -y \
-    git curl zip unzip \
-    libssl-dev \
-    pkg-config \
-    libzip-dev \
-    libpng-dev \
-    libonig-dev
+    unzip git curl libzip-dev libssl-dev pkg-config && \
+    pecl install mongodb && \
+    docker-php-ext-enable mongodb && \
+    docker-php-ext-install zip && \
+    rm -rf /var/lib/apt/lists/*
 
-# instalar extensiones base
-RUN docker-php-ext-install pdo mbstring zip exif pcntl bcmath
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# 🔥 MongoDB extension (CRÍTICO)
-RUN pecl install mongodb \
-    && docker-php-ext-enable mongodb
-
-# comprobar que existe (debug útil)
-RUN php -m | grep mongodb
-
-# Composer
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
-
-WORKDIR /var/www
+WORKDIR /app
 
 COPY . .
 
-# 🔥 IMPORTANTE: NO scripts
-RUN composer install --no-dev --optimize-autoloader --no-scripts
+RUN rm -f composer.lock && \
+    COMPOSER_MEMORY_LIMIT=-1 composer update \
+    --no-dev \
+    --no-interaction \
+    --prefer-dist \
+    --ignore-platform-reqs
+ 
+RUN mkdir -p storage/logs storage/framework/sessions storage/framework/views storage/framework/cache bootstrap/cache && \
+    chmod -R 777 storage bootstrap/cache
+ 
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+EXPOSE 10000
+
+CMD ["docker-entrypoint.sh"]
