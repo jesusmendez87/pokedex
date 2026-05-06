@@ -12,19 +12,19 @@ export class PokemonService {
 
       private apiUrl = environment.apiUrl + '/api/';
 
-    constructor(private http: HttpClient) {}
+    constructor(private https: HttpClient) {}
 
     getPokemonList(): Observable<any> {
-      return this.http.get(this.apiUrl + 'pokemons');
+      return this.https.get(this.apiUrl + 'pokemons');
     }
 
     addPokemon(pokemon: PokemonResponse): Observable<PokemonResponse> {
-      return this.http.post<PokemonResponse>(this.apiUrl + 'pokemons', pokemon);
+      return this.https.post<PokemonResponse>(this.apiUrl + 'pokemons', pokemon);
     }
 
 
     deletePokemon(id: string): Observable<any> {
-      return this.http.delete(`${this.apiUrl}pokemons/${id}`);
+      return this.https.delete(`${this.apiUrl}pokemons/${id}`);
     }
 
   }
