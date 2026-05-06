@@ -18,11 +18,13 @@ RUN rm -f composer.lock && \
     --no-dev \
     --no-interaction \
     --prefer-dist \
-    --ignore-platform-reqs
- 
+    --ignore-platform-reqs \
+    --no-scripts
+
+
 RUN mkdir -p storage/logs storage/framework/sessions storage/framework/views storage/framework/cache bootstrap/cache && \
     chmod -R 777 storage bootstrap/cache
- 
+
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 

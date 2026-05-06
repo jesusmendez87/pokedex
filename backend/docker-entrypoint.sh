@@ -9,14 +9,14 @@ APP_KEY=${APP_KEY:-}
 APP_DEBUG=${APP_DEBUG:-false}
 APP_URL=${APP_URL:-http://localhost}
 
- 
+
 
 DB_CONNECTION=${DB_CONNECTION:-mongodb}
 DB_HOST=${DB_HOST:-}
 DB_PORT=${DB_PORT:-27017}
 DB_DATABASE=${DB_DATABASE:-}
 
- 
+
 
 MONGO_URI=${MONGO_URI:-}
 driver=${driver:-mongodb}
@@ -31,6 +31,6 @@ if [ -z "$APP_KEY" ]; then
     php artisan key:generate --force
 fi
 
- 
+
 php artisan config:clear
 exec php artisan serve --host=0.0.0.0 --port=${PORT:-10000}
