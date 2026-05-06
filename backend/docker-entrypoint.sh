@@ -19,7 +19,7 @@ DB_DATABASE=${DB_DATABASE:-}
  
 
 MONGO_URI=${MONGO_URI:-}
-driver=${driver:mongodb}
+driver=${driver:-mongodb}
 
 CACHE_DRIVER=${CACHE_DRIVER:-file}
 SESSION_DRIVER=${SESSION_DRIVER:-file}
